@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class DataDto {
+public class WeatherDataDto {
     private double temperature;
     private double humidity;
     private double pressure;
@@ -14,7 +14,7 @@ public class DataDto {
     private String windDirection;
     private LocationDto location;
 
-    public DataDto() {
+    public WeatherDataDto() {
     }
 
     public double getTemperature() {
@@ -69,8 +69,8 @@ public class DataDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DataDto dataDto = (DataDto) o;
-        return Double.compare(dataDto.temperature, temperature) == 0 && Double.compare(dataDto.humidity, humidity) == 0 && Double.compare(dataDto.pressure, pressure) == 0 && windSpeed == dataDto.windSpeed && Objects.equals(windDirection, dataDto.windDirection) && Objects.equals(location, dataDto.location);
+        WeatherDataDto weatherDataDto = (WeatherDataDto) o;
+        return Double.compare(weatherDataDto.temperature, temperature) == 0 && Double.compare(weatherDataDto.humidity, humidity) == 0 && Double.compare(weatherDataDto.pressure, pressure) == 0 && windSpeed == weatherDataDto.windSpeed && Objects.equals(windDirection, weatherDataDto.windDirection) && Objects.equals(location, weatherDataDto.location);
     }
 
     @Override

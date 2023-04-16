@@ -6,7 +6,7 @@ import java.util.Objects;
 public class MeasurementDto {
     private Integer id;
     private TimestampDto timestamp;
-    private List<DataDto> data;
+    private List<WeatherDataDto> data;
 
     public MeasurementDto() {
     }
@@ -27,11 +27,11 @@ public class MeasurementDto {
         this.timestamp = timestamp;
     }
 
-    public List<DataDto> getData() {
+    public List<WeatherDataDto> getData() {
         return data;
     }
 
-    public void setData(List<DataDto> data) {
+    public void setData(List<WeatherDataDto> data) {
         this.data = data;
     }
 
