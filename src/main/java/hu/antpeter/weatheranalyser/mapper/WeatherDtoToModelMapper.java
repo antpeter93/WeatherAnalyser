@@ -23,7 +23,7 @@ public class WeatherDtoToModelMapper {
         return weather;
     }
 
-    private Instant parseTimestamp(TimestampDto timestampDto) {
+    Instant parseTimestamp(TimestampDto timestampDto) {
         String year = String.valueOf(timestampDto.getYear());
         String month = timestampDto.getMonth() < 10 ? "0"+ timestampDto.getMonth() : String.valueOf(timestampDto.getMonth());
         String day = timestampDto.getDay() < 10 ? "0"+ timestampDto.getDay() : String.valueOf(timestampDto.getDay());
@@ -31,17 +31,18 @@ public class WeatherDtoToModelMapper {
         return Instant.parse(String.format("%s-%s-%sT%s:00:00.00Z", year, month, day, hour));
     }
 
-    private WeatherData convertDtoToModel(WeatherDataDto weatherDataDto) {
+    WeatherData convertDtoToModel(WeatherDataDto weatherDataDto) {
         WeatherData weatherData = new WeatherData();
         weatherData.setTemperature(weatherDataDto.getTemperature());
         weatherData.setHumidity(weatherDataDto.getHumidity());
         weatherData.setPressure(weatherDataDto.getPressure());
+        weatherData.setWindSpeed(weatherDataDto.getWindSpeed());
         weatherData.setWindDirection(WindDirection.valueOf(weatherDataDto.getWindDirection().toUpperCase()));
         weatherData.setWeatherLocation(convertDtoToModel(weatherDataDto.getLocation()));
         return weatherData;
     }
 
-    private WeatherLocation convertDtoToModel(LocationDto locationDto) {
+    WeatherLocation convertDtoToModel(LocationDto locationDto) {
         WeatherLocation weatherLocation = new WeatherLocation();
         weatherLocation.setLatitude(locationDto.getLatitude());
         weatherLocation.setLongitude(locationDto.getLongitude());
