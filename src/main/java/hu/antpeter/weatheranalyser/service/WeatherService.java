@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class WeatherService {
 
@@ -32,6 +36,13 @@ public class WeatherService {
         WeatherMetaDataEntity savedEntity = metadataRepository.save(entity);
         logger.info("Saved entity {}", savedEntity);
         return entityToModelMapper.convert(savedEntity);
+    }
+
+    public List<Weather> findByTimeRange(Instant from, Instant to) {
+        return metadataRepository.findByTimeRange(from, to).stream()
+                .map(entity -> entityToModelMapper.convert(entity))
+                .collect(Collectors.toList());
+
     }
 
 }
