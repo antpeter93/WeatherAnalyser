@@ -42,6 +42,12 @@ public class WeatherService {
         return metadataRepository.findByTimeRange(from, to).stream()
                 .map(entity -> entityToModelMapper.convert(entity))
                 .collect(Collectors.toList());
+    }
+
+    public List<Weather> findAll() {
+        return metadataRepository.findAll().stream()
+                .map(entity -> entityToModelMapper.convert(entity))
+                .collect(Collectors.toList());
 
     }
 

@@ -1,0 +1,13 @@
+{
+  "from": "2023-05-27T08:27:02.920Z",
+  "to": "2023-05-27T08:27:02.920Z",
+  "minimumTemperatureByLocationByTimeRange": {},
+  "maximumTemperatureByLocationByTimeRange": {},
+  "mostFrequentWindDirectionThisYear": "WEST",
+  "averageWindSpeedByLocation": {
+    "WeatherLocation{longitude=47.49801, latitude=19.03991}": 0.0
+  },
+  "averageHumidityOfLocationAboveAverageHumidity": {
+    "WeatherLocation{longitude=47.49801, latitude=19.03991}": false
+  }
+}
