@@ -17,12 +17,14 @@ import java.util.stream.Collectors;
     Retrieving the minimum temperature value by location in a specific time range.
     Retrieving the maximum temperature value by location in a specific time range.
     Retrieving the most frequently occurred wind direction this year.
-    Retrieving the average of wind speed by locations yearly.
-    Retrieving the fact if humidity is above average or not.
+    Retrieving the average of wind speed by locations.
+    Retrieving the fact if humidity is above average or not by locations.
      */
 
 @Service
 public class WeatherStatistics {
+
+    public static final Double NO_DATA = Double.MIN_VALUE;
     private final WeatherService weatherService;
 
     public WeatherStatistics(WeatherService weatherService) {
@@ -51,14 +53,14 @@ public class WeatherStatistics {
         return getTemperature(location, data).stream()
                 .mapToDouble(value -> value)
                 .min()
-                .orElse(Double.MIN_VALUE);
+                .orElse(NO_DATA);
     }
 
     private Double getMaximumTemperature(WeatherLocation location, List<Weather> data) {
         return getTemperature(location, data).stream()
                 .mapToDouble(value -> value)
                 .max()
-                .orElse(Double.MAX_VALUE);
+                .orElse(NO_DATA);
     }
 
     private List<Double> getTemperature(WeatherLocation location, List<Weather> data) {
@@ -103,6 +105,57 @@ public class WeatherStatistics {
                         direction -> 1,
                         (v1, v2) -> v1 + v2
                 ));
+    }
+
+    // Retrieving the average of wind speed by locations.
+    public Map<WeatherLocation, Double> getAverageWindSpeedByLocation() {
+        List<Weather> data = weatherService.findAll();
+        Set<WeatherLocation> locations = getUniqueLocation(data);
+        return locations.stream()
+                .collect(Collectors.toMap(
+                        location -> location,
+                        location -> getAverageWindSpeed(location, data)
+                ));
+    }
+
+    private Double getAverageWindSpeed(WeatherLocation weatherLocation, List<Weather> data) {
+        return data.stream()
+                .map(weather -> weather.getWeatherData())
+                .flatMap(weatherDataList -> weatherDataList.stream())
+                .filter(weatherData -> weatherData.getWeatherLocation().equals(weatherLocation))
+                .mapToInt(weatherData -> weatherData.getWindSpeed())
+                .average()
+                .orElse(NO_DATA);
+    }
+
+    public Map<WeatherLocation, Boolean> isAverageHumidityOfLocationAboveAverageHumidity() {
+        List<Weather> data = weatherService.findAll();
+        Set<WeatherLocation> locations = getUniqueLocation(data);
+        Double averageHumidity = getAverageHumidity(data);
+        return locations.stream()
+                .collect(Collectors.toMap(
+                        location -> location,
+                        location -> getAverageHumidityOfLocation(data, location) > averageHumidity
+                ));
+    }
+
+    private Double getAverageHumidity(List<Weather> data) {
+        return data.stream()
+                .map(weather -> weather.getWeatherData())
+                .flatMap(weatherDataList -> weatherDataList.stream())
+                .mapToDouble(weatherData -> weatherData.getHumidity())
+                .average()
+                .orElse(NO_DATA);
+    }
+
+    private Double getAverageHumidityOfLocation(List<Weather> data, WeatherLocation location) {
+        return data.stream()
+                .map(weather -> weather.getWeatherData())
+                .flatMap(weatherDataList -> weatherDataList.stream())
+                .filter(weatherData -> weatherData.getWeatherLocation().equals(location))
+                .mapToDouble(weatherData -> weatherData.getHumidity())
+                .average()
+                .orElse(NO_DATA);
     }
 
 }
