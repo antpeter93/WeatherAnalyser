@@ -49,7 +49,7 @@ public class WeatherStatistics {
                 .collect(Collectors.toSet());
     }
 
-    Double getMinimumTemperature(WeatherLocation location, List<Weather> data) {
+    private Double getMinimumTemperature(WeatherLocation location, List<Weather> data) {
         return getTemperature(location, data).stream()
                 .mapToDouble(value -> value)
                 .min()
